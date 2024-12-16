@@ -10,28 +10,31 @@ import org.springframework.web.bind.annotation.RestController;
 import com.devsuperior.dsmeta.dto.SaleMinDTO;
 import com.devsuperior.dsmeta.services.SaleService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "/sales")
 public class SaleController {
 
-	@Autowired
-	private SaleService service;
-	
-	@GetMapping(value = "/{id}")
-	public ResponseEntity<SaleMinDTO> findById(@PathVariable Long id) {
-		SaleMinDTO dto = service.findById(id);
-		return ResponseEntity.ok(dto);
-	}
+    @Autowired
+    private SaleService service;
 
-	@GetMapping(value = "/report")
-	public ResponseEntity<?> getReport() {
-		// TODO
-		return null;
-	}
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<SaleMinDTO> findById(@PathVariable Long id) {
+        SaleMinDTO dto = service.findById(id);
+        return ResponseEntity.ok(dto);
+    }
 
-	@GetMapping(value = "/summary")
-	public ResponseEntity<?> getSummary() {
-		// TODO
-		return null;
-	}
+    @GetMapping(value = "/report")
+    public ResponseEntity<List<SaleMinDTO>> getReport() {
+        List<SaleMinDTO> dto = service.getReport();
+        return ResponseEntity.ok(dto);
+    }
+
+
+    @GetMapping(value = "/summary")
+    public ResponseEntity<?> getSummary() {
+        // TODO
+        return null;
+    }
 }
