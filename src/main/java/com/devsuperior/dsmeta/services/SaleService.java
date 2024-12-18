@@ -14,21 +14,27 @@ import com.devsuperior.dsmeta.repositories.SaleRepository;
 @Service
 public class SaleService {
 
-	@Autowired
-	private SaleRepository repository;
-	
-	public SaleMinDTO findById(Long id) {
-		Optional<Sale> result = repository.findById(id);
-		Sale entity = result.get();
-		return new SaleMinDTO(entity);
-	}
+    @Autowired
+    private SaleRepository repository;
 
-	public List<SaleMinDTO> getReport() {
-		return repository.findAllByDateBetween(
-				LocalDate.now()
-						.minusMonths(12), LocalDate.now()
-		);
+    public SaleMinDTO findById(Long id) {
+        Optional<Sale> result = repository.findById(id);
+        Sale entity = result.get();
+        return new SaleMinDTO(entity);
+    }
 
-	}
+    public List<SaleMinDTO> getReport(LocalDate minDate, LocalDate maxDate, String name) {
+        if (minDate == null) {
+            minDate = LocalDate.now().minusYears(1);
+        }
+        if (maxDate == null) {
+            maxDate = LocalDate.now();
+        }
+        if (name == null || name.trim().isEmpty()) {
+            return repository.findAllByDateBetween(LocalDate.now().minusYears(1), LocalDate.now());
+        } else {
+            return repository.findAllByDateBetweenWithName(minDate, maxDate, "%" + name + "%");
+        }
+    }
 
 }
