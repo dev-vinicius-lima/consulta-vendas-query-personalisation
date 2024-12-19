@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import com.devsuperior.dsmeta.projections.SellerSaleSummaryProjection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +35,14 @@ public class SaleService {
             return repository.findAllByDateBetween(LocalDate.now().minusYears(1), LocalDate.now());
         } else {
             return repository.findAllByDateBetweenWithName(minDate, maxDate, "%" + name + "%");
+        }
+    }
+
+    public List<SellerSaleSummaryProjection> getSummaryForSaller(LocalDate minDate, LocalDate maxDate) {
+        if (minDate == null && maxDate == null) {
+            return repository.getSummaryForSaller(LocalDate.now().minusYears(1), LocalDate.now());
+        } else {
+            return repository.getSummaryForSallerRepository(minDate, maxDate);
         }
     }
 

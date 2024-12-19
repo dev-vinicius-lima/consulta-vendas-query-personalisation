@@ -1,5 +1,7 @@
 package com.devsuperior.dsmeta.controllers;
 
+import com.devsuperior.dsmeta.entities.Seller;
+import com.devsuperior.dsmeta.projections.SellerSaleSummaryProjection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -25,17 +27,16 @@ public class SaleController {
     }
 
     @GetMapping(value = "/report")
-    public ResponseEntity<List<SaleMinDTO>> getReport(@RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate minDate,
-                                                      @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate maxDate,
-                                                      @RequestParam(required = false) String name) {
+    public ResponseEntity<List<SaleMinDTO>> getReport(@RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate minDate, @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate maxDate, @RequestParam(required = false) String name) {
         List<SaleMinDTO> dto = service.getReport(minDate, maxDate, name);
         return ResponseEntity.ok().body(dto);
     }
 
 
     @GetMapping(value = "/summary")
-    public ResponseEntity<?> getSummary() {
-        // TODO
-        return null;
+    public ResponseEntity<List<SellerSaleSummaryProjection>> getSummary(@RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate minDate, @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate maxDate) {
+        List<SellerSaleSummaryProjection> summaries = service.getSummaryForSaller(minDate, maxDate);
+        return ResponseEntity.ok(summaries);
+
     }
 }
